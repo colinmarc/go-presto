@@ -17,3 +17,5 @@ for row, _ := query.Next(); row != nil {
   fmt.Println(row...)
 }
 ```
+
+[1]: https://github.com/facebook/presto
