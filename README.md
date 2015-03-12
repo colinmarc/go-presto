@@ -11,7 +11,7 @@ import (
 
 // Host, user, source, catalog, schema, query
 query := "SELECT * FROM sys.node"
-query, _ := presto.NewQuery("http//presto-coordinator:8080", "", "", "", query)
+query, _ := presto.NewQuery("http//presto-coordinator:8080", "", "", "", "", query)
 
 for row, _ := query.Next(); row != nil {
   fmt.Println(row...)
