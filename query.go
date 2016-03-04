@@ -77,6 +77,7 @@ func NewQuery(host, user, source, catalog, schema, query string) (*Query, error)
 	q := &Query{
 		host:    host,
 		user:    user,
+		source:  source,
 		catalog: catalog,
 		schema:  schema,
 		query:   query,
@@ -226,6 +227,7 @@ func (q *Query) makeRequest(req *http.Request) (*http.Response, error) {
 	req.Header.Add("X-Presto-User", q.user)
 	req.Header.Add("X-Presto-Catalog", q.catalog)
 	req.Header.Add("X-Presto-Schema", q.schema)
+	req.Header.Add("X-Presto-Source", q.source)
 
 	// Sometimes presto returns a 503 to indicate that results aren't yet
 	// available, and we should retry after waiting a bit.
