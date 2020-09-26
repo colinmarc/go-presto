@@ -183,7 +183,7 @@ func (q *Query) fetchNext() error {
 	q.bufferedRows = result.Data
 	q.state = result.Stats.State
 
-	if q.columns == nil {
+	if q.columns == nil && len(result.Columns) > 0 {
 		q.columns = make([]string, len(result.Columns))
 		for i, col := range result.Columns {
 			q.columns[i] = col.Name
@@ -223,11 +223,11 @@ func (q *Query) fetchResult(req *http.Request) (*queryResult, error) {
 }
 
 func (q *Query) makeRequest(req *http.Request) (*http.Response, error) {
-	req.Header.Add("User-Agent", userAgent)
-	req.Header.Add("X-Presto-User", q.user)
-	req.Header.Add("X-Presto-Catalog", q.catalog)
-	req.Header.Add("X-Presto-Schema", q.schema)
-	req.Header.Add("X-Presto-Source", q.source)
+	req.Header.Add(userAgentHeader, userAgent)
+	req.Header.Add(userHeader, q.user)
+	req.Header.Add(catalogHeader, q.catalog)
+	req.Header.Add(schemaHeader, q.schema)
+	req.Header.Add(sourceHeader, q.source)
 
 	// Sometimes presto returns a 503 to indicate that results aren't yet
 	// available, and we should retry after waiting a bit.

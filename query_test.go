@@ -1,6 +1,7 @@
 package presto
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"os"
@@ -13,7 +14,9 @@ func TestQuery(t *testing.T) {
 		t.Skip("Skipping tests because PRESTO isn't set in the environment")
 	}
 
-	q, err := NewQuery(presto, "test", "go-presto-test", "sys", "", "select count(*) from sys.node")
+	expectedColumn := "total_nodes"
+	sql := "select count(*) as %s from sys.node"
+	q, err := NewQuery(presto, "test", "go-presto-test", "sys", "", fmt.Sprintf(sql, expectedColumn))
 	require.NoError(t, err)
 
 	rows := make([][]interface{}, 0, 1)
@@ -29,4 +32,6 @@ func TestQuery(t *testing.T) {
 
 	assert.Equal(t, 1, len(rows))
 	assert.Equal(t, 1, len(rows[0]))
+	assert.Equal(t, 1, len(q.Columns()))
+	assert.Equal(t, expectedColumn, q.Columns()[:0])
 }
