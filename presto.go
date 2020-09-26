@@ -5,7 +5,7 @@ query engine.
 package presto
 
 const (
-	version = "0.1.0"
+	version = "0.1.1"
 
 	userHeader      = "X-Presto-User"
 	sourceHeader    = "X-Presto-Source"
