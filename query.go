@@ -111,6 +111,11 @@ func (q *Query) Progress() float64 {
 	return q.progress
 }
 
+// Id returns a execution id of the query.
+func (q *Query) Id() string {
+	return q.id
+}
+
 // Close closes the query, and cancels it if started.
 func (q *Query) Close() error {
 	if q.closed {
